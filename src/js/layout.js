@@ -6,7 +6,7 @@ import { Home } from "./views/home";
 import { Demo } from "./views/demo";
 import { Single } from "./views/single";
 import injectContext from "./store/appContext";
-
+import LogIn from "./views/Login";
 import { Footer } from "./component/footer";
 import Menu from "./component/navbar.jsx";
 
@@ -30,6 +30,9 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/single/:theid">
 							<Single />
+						</Route>
+						<Route exact path="/login">
+							<LogIn></LogIn>
 						</Route>
 						<Route>
 							<h1>Not found!</h1>
