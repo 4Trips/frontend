@@ -4,6 +4,8 @@ import ScrollToTop from "./component/scrollToTop";
 
 import { Home } from "./views/home";
 import { Demo } from "./views/demo";
+import { Login } from "./views/Login.js";
+
 import { Single } from "./views/single";
 import injectContext from "./store/appContext";
 import LogIn from "./views/Login";
@@ -24,6 +26,9 @@ const Layout = () => {
 					<Switch>
 						<Route exact path="/">
 							<Home />
+						</Route>
+						<Route exact path="/login">
+							<Login />
 						</Route>
 						<Route exact path="/demo">
 							<Demo />
