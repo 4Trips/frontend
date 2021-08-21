@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import Button from "react-bootstrap/Button";
 
-export default function LogIn(props) {
+const LogIn = props => {
 	const { store, actions } = useContext(Context);
 	const [state, setState] = useState({
 		email: "",
@@ -37,12 +37,14 @@ export default function LogIn(props) {
 	};
 	const handelSubmit = event => {
 		event.preventDefault();
+		console.log("en handle");
 		setErrFetch({
 			status: false,
 			msg: ""
 		});
 		if (state.email == "" || state.password == "") {
 			setError({ ...error, email: "Introduce tu email", password: "Introduce tu contraseña" });
+			console.log("en handle22222");
 		} else {
 			actions.login(state, setErrFetch, props.history, setLoading);
 			setLoading(true);
@@ -54,13 +56,13 @@ export default function LogIn(props) {
 			<Form onChange={handelChange} onSubmit={handelSubmit}>
 				<Form.Group className="mb-3" controlId="formBasicEmail">
 					<Form.Label>Email address</Form.Label>
-					<Form.Control type="email" placeholder="Enter email" />
+					<Form.Control type="email" placeholder="Enter email" name="email" />
 					<Form.Text className="text-muted">Well never share your email with anyone else.</Form.Text>
 				</Form.Group>
 
 				<Form.Group className="mb-3" controlId="formBasicPassword">
 					<Form.Label>Password</Form.Label>
-					<Form.Control type="password" placeholder="Password" />
+					<Form.Control type="password" placeholder="Password" name="password" />
 				</Form.Group>
 				<Form.Group className="mb-3" controlId="formBasicCheckbox">
 					<Form.Check type="checkbox" label="Check me out" />
@@ -71,8 +73,9 @@ export default function LogIn(props) {
 			</Form>
 		</div>
 	);
-}
+};
 
 LogIn.propTypes = {
 	history: PropTypes.object
 };
+export default LogIn;
