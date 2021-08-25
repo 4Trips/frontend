@@ -1,0 +1,25 @@
+.footer{
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: #212529;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+  .linksfooter a {
+    color: white;
+  }
+  .linksfooter a:link {
+    color: white;
+  }
+  .linksfooter a:visited {
+    color: white;
+  }
+  .linksfooter a:hover {
+    color: #9b9d9e;
+  }
+  .linksfooter a:active {
+    color: white;
+  }
