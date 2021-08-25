@@ -11,19 +11,19 @@ export const Footer = () => (
 				<img src={facebook} />
 			</Nav.Item>
 			<Nav.Item>
-				<Nav.Link href="#" className="text-muted">
+				<Nav.Link href="#" className="text-muted linksfooter">
 					Contactar
 				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item>
-				<Nav.Link href="#" className="text-muted">
+				<Nav.Link href="#" className="text-muted linksfooter">
 					Privacidad
 				</Nav.Link>
 			</Nav.Item>
+			<Card.Footer className="text-muted linksfooter">
+				&copy; {new Date().getFullYear()} Copyright: <a href="https://www.4trips.com"> 4 Trips</a>
+			</Card.Footer>
 		</div>
-		<Card.Footer className="text-muted">
-			{" "}
-			&copy; {new Date().getFullYear()} Copyright: <a href="https://www.4trips.com"> 4 Trips</a>
-		</Card.Footer>
 	</div>
 );
+//Cuando tengamos newsletter poner <Card.Footer></Card.Footer> después de </div> de línea 26 y la caja del newsletter en el div de los <Nav.Item>

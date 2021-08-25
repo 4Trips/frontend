@@ -1,6 +1,6 @@
 .footer{
-    margin-top: 1rem;
-    padding: 1rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
     background-color: #212529;
     position: fixed;
     bottom: 0;
@@ -8,18 +8,18 @@
     width: 100%;
     text-align: center;
   }
-  a {
+  .linksfooter a {
     color: white;
   }
-  a:link {
+  .linksfooter a:link {
     color: white;
   }
-  a:visited {
+  .linksfooter a:visited {
     color: white;
   }
-  a:hover {
+  .linksfooter a:hover {
     color: #9b9d9e;
   }
-  a:active {
+  .linksfooter a:active {
     color: white;
   }
