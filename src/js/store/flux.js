@@ -1,4 +1,4 @@
-const URL = "https://3000-turquoise-sloth-olz20l5f.ws-eu16.gitpod.io/";
+const URL = "https://3000-sapphire-ant-23c0doyk.ws-eu16.gitpod.io/";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -50,7 +50,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setLoading(false);
 						history.push("/");
 					})
-					.catch(err => console.log(err, "error login "));
+					.catch(err => {
+						console.log(err, "error login ");
+					});
 			}
 		}
 	};

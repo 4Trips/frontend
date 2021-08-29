@@ -48,29 +48,32 @@ const LogIn = props => {
 		} else {
 			actions.login(state, setErrFetch, props.history, setLoading);
 			setLoading(true);
+			console.log("en handle2");
 		}
 	};
 
 	return (
-		<div className="container">
-			<Form onChange={handelChange} onSubmit={handelSubmit}>
-				<Form.Group className="mb-3" controlId="formBasicEmail">
-					<Form.Label>Email address</Form.Label>
-					<Form.Control type="email" placeholder="Enter email" name="email" />
-					<Form.Text className="text-muted">Well never share your email with anyone else.</Form.Text>
-				</Form.Group>
-
-				<Form.Group className="mb-3" controlId="formBasicPassword">
-					<Form.Label>Password</Form.Label>
-					<Form.Control type="password" placeholder="Password" name="password" />
-				</Form.Group>
-				<Form.Group className="mb-3" controlId="formBasicCheckbox">
-					<Form.Check type="checkbox" label="Check me out" />
-				</Form.Group>
-				<Button className="jus" variant="primary" type="submit">
-					Submit
-				</Button>
-			</Form>
+		<div className="container" onChange={handelChange} onSubmit={handelSubmit}>
+			<div className="row justify-content-md-center">
+				<div className="col-12 col-md-6 ">
+					<Form className="p-5">
+						<Form.Group className="mb-3" controlId="formBasicEmail">
+							<Form.Label>Email</Form.Label>
+							<Form.Control type="email" placeholder="email" name="email" />
+							<Form.Text className="text-muted"></Form.Text>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="formBasicPassword">
+							<Form.Label>Contraseña</Form.Label>
+							<Form.Control type="password" placeholder="contraseña" name="password" />
+						</Form.Group>
+						<div className=" text-center">
+							<Button variant="dark" type="submit">
+								Login
+							</Button>
+						</div>
+					</Form>
+				</div>
+			</div>
 		</div>
 	);
 };
