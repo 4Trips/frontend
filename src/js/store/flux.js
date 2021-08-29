@@ -1,42 +1,58 @@
+const URL = "https://3000-sapphire-ant-23c0doyk.ws-eu16.gitpod.io/";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			isLogin: false
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
+			login: (body, setErrFetch, history, setLoading) => {
 				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+				fetch(URL + "login", {
+					method: "POST",
+					body: JSON.stringify(body),
+					headers: {
+						"Content-Type": "application/json"
+					}
+				})
+					.then(res => {
+						console.log(res);
+						if (res.status == 401) {
+							setErrFetch({
+								status: true,
+								msg: "Usuario o contraseña incorrectos"
+							});
+							setLoading(false);
+							return;
+						} else if (res.status == 404) {
+							setErrFetch({
+								status: true,
+								msg: "Usuario no existe"
+							});
+							setLoading(false);
+							return;
+						} else if (res.status == 500) {
+							setErrFetch({
+								status: true,
+								msg: "Error interno"
+							});
+							setLoading(false);
+							return;
+						}
+						return res.json();
+					})
+					.then(data => {
+						localStorage.setItem("token", data.access_token);
+						localStorage.setItem("rol", data.rol);
+						localStorage.setItem("id", data.id);
+						console.log(data, "data");
+						setStore({ isLogin: true, rol: data.rol, tripList: [] });
+						getActions().loadingTrips(1);
+						setLoading(false);
+						history.push("/");
+					})
+					.catch(err => {
+						console.log(err, "error login ");
+					});
 			}
 		}
 	};
