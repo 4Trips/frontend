@@ -1,4 +1,4 @@
-const URL = "https://3000-sapphire-ant-23c0doyk.ws-eu16.gitpod.io/";
+const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu16.gitpod.io";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -53,6 +53,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(err => {
 						console.log(err, "error login ");
 					});
+			},
+			registerTraveler: async body => {
+				try {
+					const res = await fetch(URL + "/user/register/traveler", {
+						method: "POST",
+						body: JSON.stringify(body),
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					console.log(res);
+				} catch (err) {}
 			}
 		}
 	};
