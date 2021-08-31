@@ -7,7 +7,6 @@ import LogIn from "./views/Login.js";
 import { Single } from "./views/single";
 import injectContext from "./store/appContext";
 
-
 import { Footer } from "./component/footer.jsx";
 import Menu from "./component/navbar.jsx";
 
