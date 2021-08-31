@@ -1,4 +1,4 @@
-const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu16.gitpod.io";
+const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu15.gitpod.io/";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -54,17 +54,47 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(err, "error login ");
 					});
 			},
-			registerTraveler: async body => {
-				try {
-					const res = await fetch(URL + "/user/register/traveler", {
-						method: "POST",
-						body: JSON.stringify(body),
-						headers: {
-							"Content-Type": "application/json"
+			registerTraveler: (traveler, props, file, setValied, setExist) => {
+				const store = getStore();
+				const { username, email, password, avatar } = traveler;
+				let formData = new FormData();
+				formData.append("username", username);
+				formData.append("email", email);
+				formData.append("password", password);
+				if (file != undefined) {
+					formData.append("avatar", file, file.name);
+				}
+
+				fetch(URL + "user/register/traveler", {
+					method: "POST",
+					body: formData,
+					redirect: "follow",
+					headers: {
+						//"Content-Type": "application/json"
+					}
+				})
+					.then(res => {
+						if (res.status == 200) {
+							setValied({ status: true, msg: "Registro completado con éxito" });
+							setTimeout(() => {
+								props.history.push("/login");
+							}, 1000);
+						} else if (res.status == 404) {
+							setNoValied({
+								status: true,
+								msg: "introduce todos los campos"
+							});
 						}
+						if (res.status == 409) {
+							setExist({ status: true, msg: "Correo o nombre de usuario ya existe " });
+						}
+					})
+					.then(data => {
+						setStore({ travelerInfoCollected: data });
+					})
+					.catch(err => {
+						console.log(err);
 					});
-					console.log(res);
-				} catch (err) {}
 			}
 		}
 	};
