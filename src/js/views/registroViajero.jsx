@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 ///Componentes
 
 const registerTraveler = props => {
@@ -15,9 +16,9 @@ const registerTraveler = props => {
 		avatar: ""
 	});
 
-	const [submited, setSubmited] = useState(false);
-
 	const [valied, setValied] = useState({ status: false, msg: "" });
+
+	const [submited, setSubmited] = useState(false);
 
 	const [noValied, setNoValied] = useState({
 		status: false,
@@ -68,7 +69,27 @@ const registerTraveler = props => {
 			<div className="row justify-content-md-center">
 				<div className="col-12 col-md-6 ">
 					<Form className="p-5" noValidate onSubmit={handleSubmit}>
-						<input type="file" name="avatar" className="hidenButton" id="file" />
+						{valied.status == true ? (
+							<div className="alert alert-success" role="alert">
+								<p className="">{valied.msg}</p>
+							</div>
+						) : null}
+						<div className="col-12 col-md-6 ">
+							{datos.avatar ? (
+								<Image src={datos.avatar} thumbnail roundedCircle />
+							) : (
+								<Image
+									src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
+									thumbnail
+									roundedCircle
+								/>
+							)}
+						</div>
+						<Form.Group controlId="formFile" className="mb-3">
+							<Form.Label>Sube una foto</Form.Label>
+							<Form.Control type="file" name="avatar" id="file" />
+						</Form.Group>
+
 						<Form.Group className="mb-3" controlId="formBasicUser">
 							<Form.Label>Nombre de usuario</Form.Label>
 							<Form.Control
@@ -78,6 +99,7 @@ const registerTraveler = props => {
 								onChange={handleChange}
 								value={datos.username}
 							/>
+							{submited && !datos.username ? <span className="">Escoge un nombre de usuario</span> : null}
 							<Form.Text className="text-muted"></Form.Text>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -89,6 +111,9 @@ const registerTraveler = props => {
 								onChange={handleChange}
 								value={datos.email}
 							/>
+							{submited && !datos.email ? (
+								<span className="">Introduce una dirección de correo electrónico válida</span>
+							) : null}
 							<Form.Text className="text-muted"></Form.Text>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="formBasicPassword">
@@ -100,6 +125,9 @@ const registerTraveler = props => {
 								onChange={handleChange}
 								value={datos.password}
 							/>
+							{submited && !datos.password ? (
+								<span className="">La contraseña al menos debe ser de 6 caracteres</span>
+							) : null}
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="formBasicRepeatPassword">
 							<Form.Label>Repite la contraseña</Form.Label>
@@ -110,11 +138,24 @@ const registerTraveler = props => {
 								onChange={handleChange}
 								value={datos.repeatPassword}
 							/>
+							{submited && datos.repeatPassword != datos.password ? (
+								<span className="">Las contraseñas no coinciden</span>
+							) : null}
 						</Form.Group>
 						<Button variant="dark" type="submit">
 							Registrar
 						</Button>
 					</Form>
+					{noValied.status == true ? (
+						<div className="alert alert-danger" role="alert">
+							{noValied.msg}
+						</div>
+					) : null}
+					{exist.status == true ? (
+						<div className="alert alert-danger" role="alert">
+							{exist.msg}
+						</div>
+					) : null}
 				</div>
 			</div>
 		</div>
