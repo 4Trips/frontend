@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
+import Avatar from "../../img/default_avatar.png";
 ///Componentes
 
 const registerTraveler = props => {
@@ -69,38 +70,38 @@ const registerTraveler = props => {
 	};
 
 	return (
-		<div className="container">
-			<div className="row justify-content-md-center">
-				<div className="col-12 col-md-6 ">
+		<div className="container fluid">
+			<div className="row justify-content-center">
+				<div className="col-12 col-md-6">
 					<Form className="mb-5 mt-2 p-2" noValidate onSubmit={handleSubmit}>
 						{valied.status == true ? (
 							<div className="alert alert-success" role="alert">
 								<p className="">{valied.msg}</p>
 							</div>
 						) : null}
-						<div className="row justify-content-md-center">
-							<div className="col-12 col-md-4 ">
+						<div className="row justify-content-center">
+							<div className="col text-center">
 								{datos.avatar ? (
 									<Image src={datos.avatar} thumbnail roundedCircle />
 								) : (
-									<Image
-										src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
-										thumbnail
-										roundedCircle
-									/>
+									<Image src={Avatar} thumbnail roundedCircle />
 								)}
 							</div>
 						</div>
-						<div className="row justify-content-md-center">
-							<div className="col-12 col-md-6 ">
-								<div className="d-grid gap-1 col-6 mx-auto">
-									<Form.Group controlId="formFile" className="mb-3 mt-3">
-										<Form.Label for="file" className="btn btn-outline-dark btn-sm">
-											Sube una foto
-										</Form.Label>
-										<Form.Control type="file" name="avatar" id="file" style={divStyle} />
-									</Form.Group>
-								</div>
+						<div className="row justify-content-center">
+							<div className="col text-center">
+								<Form.Group controlId="formFile" className="mb-3 mt-3">
+									<Form.Label for="file" className="btn btn-outline-dark btn-sm">
+										Sube una foto
+									</Form.Label>
+									<Form.Control
+										className="btn"
+										type="file"
+										name="avatar"
+										id="file"
+										style={divStyle}
+									/>
+								</Form.Group>
 							</div>
 						</div>
 
@@ -156,7 +157,7 @@ const registerTraveler = props => {
 								<span className="">Las contraseñas no coinciden</span>
 							) : null}
 						</Form.Group>
-						<div className="row justify-content-md-center">
+						<div className="row">
 							<Button variant="dark" type="submit">
 								Registrar
 							</Button>
@@ -174,7 +175,7 @@ const registerTraveler = props => {
 					) : null}
 				</div>
 			</div>
-			<div className="row justify-content-md-center">
+			<div className="row">
 				<span>
 					<p>
 						<br></br>
