@@ -64,31 +64,45 @@ const registerTraveler = props => {
 		}
 	};
 
+	const divStyle = {
+		display: "none"
+	};
+
 	return (
 		<div className="container">
 			<div className="row justify-content-md-center">
 				<div className="col-12 col-md-6 ">
-					<Form className="p-5" noValidate onSubmit={handleSubmit}>
+					<Form className="mb-5 mt-2 p-2" noValidate onSubmit={handleSubmit}>
 						{valied.status == true ? (
 							<div className="alert alert-success" role="alert">
 								<p className="">{valied.msg}</p>
 							</div>
 						) : null}
-						<div className="col-12 col-md-6 ">
-							{datos.avatar ? (
-								<Image src={datos.avatar} thumbnail roundedCircle />
-							) : (
-								<Image
-									src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
-									thumbnail
-									roundedCircle
-								/>
-							)}
+						<div className="row justify-content-md-center">
+							<div className="col-12 col-md-4 ">
+								{datos.avatar ? (
+									<Image src={datos.avatar} thumbnail roundedCircle />
+								) : (
+									<Image
+										src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
+										thumbnail
+										roundedCircle
+									/>
+								)}
+							</div>
 						</div>
-						<Form.Group controlId="formFile" className="mb-3">
-							<Form.Label>Sube una foto</Form.Label>
-							<Form.Control type="file" name="avatar" id="file" />
-						</Form.Group>
+						<div className="row justify-content-md-center">
+							<div className="col-12 col-md-6 ">
+								<div className="d-grid gap-1 col-6 mx-auto">
+									<Form.Group controlId="formFile" className="mb-3 mt-3">
+										<Form.Label for="file" className="btn btn-outline-dark btn-sm">
+											Sube una foto
+										</Form.Label>
+										<Form.Control type="file" name="avatar" id="file" style={divStyle} />
+									</Form.Group>
+								</div>
+							</div>
+						</div>
 
 						<Form.Group className="mb-3" controlId="formBasicUser">
 							<Form.Label>Nombre de usuario</Form.Label>
@@ -142,9 +156,11 @@ const registerTraveler = props => {
 								<span className="">Las contraseñas no coinciden</span>
 							) : null}
 						</Form.Group>
-						<Button variant="dark" type="submit">
-							Registrar
-						</Button>
+						<div className="row justify-content-md-center">
+							<Button variant="dark" type="submit">
+								Registrar
+							</Button>
+						</div>
 					</Form>
 					{noValied.status == true ? (
 						<div className="alert alert-danger" role="alert">
@@ -157,6 +173,13 @@ const registerTraveler = props => {
 						</div>
 					) : null}
 				</div>
+			</div>
+			<div className="row justify-content-md-center">
+				<span>
+					<p>
+						<br></br>
+					</p>
+				</span>
 			</div>
 		</div>
 	);
