@@ -1,4 +1,4 @@
-const URL = "https://3000-sapphire-ant-23c0doyk.ws-eu16.gitpod.io/";
+const URL = "https://3000-fuchsia-roundworm-01twreak.ws-eu16.gitpod.io/";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -52,6 +52,68 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(err => {
 						console.log(err, "error login ");
+					});
+			},
+			registerPro: (pro, props, file, setValied, setExist, setNoValied) => {
+				const store = getStore();
+				const {
+					user_name,
+					email,
+					password,
+					phone,
+					url,
+					direction,
+					location,
+					vat_number,
+					social_reason,
+					avatar
+				} = pro;
+				console.log(pro, "pro en registrpro");
+				let formData = new FormData();
+				formData.append("user_name", user_name);
+				formData.append("email", email);
+				formData.append("password", password);
+				formData.append("phone", phone);
+				formData.append("url", url);
+				formData.append("direction", direction);
+				formData.append("location", location);
+				formData.append("vat_number", vat_number);
+				formData.append("social_reason", social_reason);
+				if (file != undefined) {
+					formData.append("avatar", file, file.name);
+				}
+				fetch(URL + "user/register/pro", {
+					method: "POST",
+					body: formData,
+					headers: {
+						//"Content-Type": "application/json"
+					}
+				})
+					.then(res => {
+						if (res.status == 201) {
+							setValied({ status: true, msg: "Registro completado con éxito" });
+							setTimeout(() => {
+								props.history.push("/login");
+							}, 1000);
+						} else if (res.status == 404) {
+							setNoValied({
+								status: true,
+								msg: "introduce todos los campos obligartorios "
+							});
+							res.json();
+							return;
+						} else if (res.status == 409) {
+							setExist({
+								status: true,
+								msg: "Correo o nombre de usuario existe "
+							});
+						}
+					})
+					.then(data => {
+						setStore({ proInfoCollected: data });
+					})
+					.catch(err => {
+						console.log(err);
 					});
 			}
 		}
