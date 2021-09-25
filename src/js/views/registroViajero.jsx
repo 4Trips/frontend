@@ -47,7 +47,7 @@ const registerTraveler = props => {
 
 			if (e.target.files[0] != undefined) {
 				//verfeicamos que existe un elemento de tipo file
-				console.log("target unbdefind", e.target.files[0]);
+				console.log("target undefind", e.target.files[0]);
 				reader.readAsDataURL(e.target.files[0]); // inicio eel proceso para convertit en una url y pasamos el archivo orginal e.target.files[0]
 			}
 		} else {
@@ -73,7 +73,7 @@ const registerTraveler = props => {
 		<div className="container fluid">
 			<div className="row justify-content-center">
 				<div className="col-12 col-md-6">
-					<Form className="mb-5 mt-2 p-2" noValidate onSubmit={handleSubmit}>
+					<Form className="mb-5 mt-2 p-2" onChange={handleChange} onSubmit={handleSubmit}>
 						{valied.status == true ? (
 							<div className="alert alert-success" role="alert">
 								<p className="">{valied.msg}</p>
@@ -90,8 +90,8 @@ const registerTraveler = props => {
 						</div>
 						<div className="row justify-content-center">
 							<div className="col text-center">
-								<Form.Group controlId="formFile" className="mb-3 mt-3">
-									<Form.Label for="file" className="btn btn-outline-dark btn-sm">
+								<Form.Group className="mb-3 mt-3">
+									<Form.Label htmlFor="file" className="btn btn-outline-dark btn-sm">
 										Sube una foto
 									</Form.Label>
 									<Form.Control

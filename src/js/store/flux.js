@@ -1,4 +1,4 @@
-const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu15.gitpod.io/";
+const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu18.gitpod.io";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
