@@ -1,4 +1,4 @@
-const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu18.gitpod.io";
+const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu18.gitpod.io/";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -54,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(err, "error login ");
 					});
 			},
-			registerTraveler: (traveler, props, file, setValied, setExist) => {
+			registerTraveler: (traveler, props, file, setExist) => {
 				const store = getStore();
 				const { username, email, password, avatar } = traveler;
 				let formData = new FormData();
@@ -75,7 +75,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 					.then(res => {
 						if (res.status == 200) {
-							setValied({ status: true, msg: "Registro completado con éxito" });
 							setTimeout(() => {
 								props.history.push("/login");
 							}, 1000);

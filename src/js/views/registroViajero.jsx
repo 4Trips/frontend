@@ -17,8 +17,6 @@ const registerTraveler = props => {
 		avatar: ""
 	});
 
-	const [valied, setValied] = useState({ status: false, msg: "" });
-
 	const [submited, setSubmited] = useState(false);
 
 	const [noValied, setNoValied] = useState({
@@ -60,7 +58,7 @@ const registerTraveler = props => {
 		if (datos.username != "" && datos.email != "" && datos.repeatPassword == datos.password) {
 			//esto es para obtener la imagen en crudo y pasarla al back
 			const file = document.querySelector("#file");
-			actions.registerTraveler(datos, props, file.files[0], setNoValied, setValied, setExist);
+			actions.registerTraveler(datos, props, file.files[0], setNoValied, setExist);
 			setSubmited(true);
 		}
 	};
@@ -74,11 +72,6 @@ const registerTraveler = props => {
 			<div className="row justify-content-center">
 				<div className="col-12 col-md-6">
 					<Form className="mb-5 mt-2 p-2" onChange={handleChange} onSubmit={handleSubmit}>
-						{valied.status == true ? (
-							<div className="alert alert-success" role="alert">
-								<p className="">{valied.msg}</p>
-							</div>
-						) : null}
 						<div className="row justify-content-center">
 							<div className="col text-center">
 								{datos.avatar ? (
