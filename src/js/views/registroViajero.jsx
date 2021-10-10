@@ -1,166 +1,163 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
+import Avatar from "../../img/default_avatar.png";
+import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Image from "react-bootstrap/Image";
-import Avatar from "../../img/default_avatar.png";
+import { useFormik } from "formik";
 ///Componentes
-
-const registerTraveler = props => {
+const validate = values => {
+	const errors = {};
+	if (!values.username) {
+		errors.username = "Obligatorio";
+	} else if (values.username.length > 15) {
+		errors.firstName = "Debe tener 15 caracteres o menos";
+	}
+	if (!values.email) {
+		errors.email = "Obligatorio";
+	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+		errors.email = "Dirección de correo electrónico errónea";
+	}
+	if (!values.password) {
+		errors.password = "Obligatorio";
+	} else if (values.password.length < 6) {
+		errors.password = "La contraseña debe tener al menos 6 caracteres";
+	}
+	if (!values.repeatPassword) {
+		errors.repeatPassword = "Obligatorio";
+	} else if (values.password != values.repeatPassword) {
+		errors.repeatPassword = "Las contraseñas deben coincidir";
+	}
+	return errors;
+};
+const registerTraveler = () => {
 	const { store, actions } = useContext(Context);
-	const [datos, setDatos] = useState({
-		username: "",
-		email: "",
-		password: "",
-		repeatPassword: "",
-		avatar: ""
+	const formik = useFormik({
+		initialValues: {
+			username: "",
+			email: "",
+			password: "",
+			repeatPassword: "",
+			avatar: ""
+		},
+		validate,
+		onSubmit: values => {
+			alert(JSON.stringify(values, null, 2));
+		}
 	});
-
-	const [submited, setSubmited] = useState(false);
-
-	const [noValied, setNoValied] = useState({
-		status: false,
-		msg: ""
-	});
-
 	const [exist, setExist] = useState({
 		status: false,
 		msg: ""
 	});
-
-	const handleChange = e => {
+	const handleChange = event => {
+		setValues({ ...prevValues, [event.target.name]: event.target.value });
+	};
+	const handleChangeAvatar = e => {
 		if (e.target.name == "avatar") {
-			// verficamos el nombre del input con el nombre "avatar"
-			const reader = new FileReader(); // creamos una instancia new FileReader que nos permite leer archivos
+			const reader = new FileReader();
 			reader.onload = event => {
-				// esta es la parte que lee el archivo
-				console.log(reader.readyState);
 				if (reader.readyState === 2) {
-					// el estado que esta el archivo "2 el estado final que se ha leido el archivo por completo"
-					console.log("target", e.target);
-					setDatos({ ...datos, avatar: reader.result }); // seteamos en el estado el resultado que hemos tenido
+					setDatos({ ...datos, avatar: reader.result });
 				}
 			};
 
 			if (e.target.files[0] != undefined) {
-				//verfeicamos que existe un elemento de tipo file
-				console.log("target undefind", e.target.files[0]);
-				reader.readAsDataURL(e.target.files[0]); // inicio eel proceso para convertit en una url y pasamos el archivo orginal e.target.files[0]
+				reader.readAsDataURL(e.target.files[0]);
 			}
 		} else {
 			setDatos({ ...datos, [e.target.name]: e.target.value });
 		}
 	};
 
-	const handleSubmit = event => {
+	const handleSubmitAvatar = event => {
 		event.preventDefault();
 		if (datos.username != "" && datos.email != "" && datos.repeatPassword == datos.password) {
 			//esto es para obtener la imagen en crudo y pasarla al back
 			const file = document.querySelector("#file");
-			actions.registerTraveler(datos, props, file.files[0], setNoValied, setExist);
-			setSubmited(true);
+			actions.registerTraveler(datos, file.files[0], setExist);
 		}
 	};
-
 	const divStyle = {
 		display: "none"
 	};
-
+	const [avatarPreview, setAvatarPreview] = useState("../../img/default_avatar.png");
 	return (
 		<div className="container fluid">
 			<div className="row justify-content-center">
 				<div className="col-12 col-md-6">
-					<Form className="mb-5 mt-2 p-2" onChange={handleChange} onSubmit={handleSubmit}>
+					<form className="mb-5 mt-2 p-2" onSubmit={formik.handleSubmit}>
 						<div className="row justify-content-center">
-							<div className="col text-center">
-								{datos.avatar ? (
-									<Image src={datos.avatar} thumbnail roundedCircle />
-								) : (
-									<Image src={Avatar} thumbnail roundedCircle />
-								)}
+							<Image src={avatarPreview || user?.avatar}></Image>
+							<div className="row justify-content-center">
+								<div className="col text-center">
+									<div className="mb-3 mt-3">
+										<label htmlFor="file" className="btn btn-outline-dark btn-sm">
+											Sube una foto
+										</label>
+										<input
+											className="btn"
+											type="file"
+											name="avatar"
+											id="file"
+											style={divStyle}
+											onChange={e => {
+												const fileReader = new FileReader();
+												fileReader.onload = () => {
+													if (fileReader.readyState === 2) {
+														setFieldValue("avatar", fileReader.result);
+														setAvatarPreview(fileReader.result);
+													}
+												};
+												fileReader.readAsDataURL(e.target.files[0]);
+											}}
+										/>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div className="row justify-content-center">
-							<div className="col text-center">
-								<Form.Group className="mb-3 mt-3">
-									<Form.Label htmlFor="file" className="btn btn-outline-dark btn-sm">
-										Sube una foto
-									</Form.Label>
-									<Form.Control
-										className="btn"
-										type="file"
-										name="avatar"
-										id="file"
-										style={divStyle}
-									/>
-								</Form.Group>
-							</div>
-						</div>
-
-						<Form.Group className="mb-3" controlId="formBasicUser">
-							<Form.Label>Nombre de usuario</Form.Label>
-							<Form.Control
-								type="text"
-								placeholder="nombre de usuario"
-								name="username"
-								onChange={handleChange}
-								value={datos.username}
-							/>
-							{submited && !datos.username ? <span className="">Escoge un nombre de usuario</span> : null}
-							<Form.Text className="text-muted"></Form.Text>
-						</Form.Group>
-						<Form.Group className="mb-3" controlId="formBasicEmail">
-							<Form.Label>Email</Form.Label>
-							<Form.Control
-								type="email"
-								placeholder="email"
-								name="email"
-								onChange={handleChange}
-								value={datos.email}
-							/>
-							{submited && !datos.email ? (
-								<span className="">Introduce una dirección de correo electrónico válida</span>
-							) : null}
-							<Form.Text className="text-muted"></Form.Text>
-						</Form.Group>
-						<Form.Group className="mb-3" controlId="formBasicPassword">
-							<Form.Label>Contraseña</Form.Label>
-							<Form.Control
-								type="password"
-								placeholder="contraseña"
-								name="password"
-								onChange={handleChange}
-								value={datos.password}
-							/>
-							{submited && !datos.password ? (
-								<span className="">La contraseña al menos debe ser de 6 caracteres</span>
-							) : null}
-						</Form.Group>
-						<Form.Group className="mb-3" controlId="formBasicRepeatPassword">
-							<Form.Label>Repite la contraseña</Form.Label>
-							<Form.Control
-								type="password"
-								placeholder="repite la contraseña"
-								name="repeatPassword"
-								onChange={handleChange}
-								value={datos.repeatPassword}
-							/>
-							{submited && datos.repeatPassword != datos.password ? (
-								<span className="">Las contraseñas no coinciden</span>
-							) : null}
-						</Form.Group>
-						<div className="row">
-							<Button variant="dark" type="submit">
-								Registrar
-							</Button>
-						</div>
-					</Form>
-					{noValied.status == true ? (
-						<div className="alert alert-danger" role="alert">
-							{noValied.msg}
-						</div>
-					) : null}
+						<label htmlFor="username">Nombre de usuario</label>
+						<input
+							id="username"
+							name="username"
+							type="text"
+							placeholder="nombre de usuario"
+							onChange={formik.handleChange}
+							value={formik.values.username}
+						/>
+						{formik.errors.username ? <div>{formik.errors.username}</div> : null}
+						<label htmlFor="email">Email</label>
+						<input
+							id="email"
+							name="email"
+							type="text"
+							placeholder="email"
+							onChange={formik.handleChange}
+							value={formik.values.email}
+						/>
+						{formik.errors.email ? <div>{formik.errors.email}</div> : null}
+						<label htmlFor="password">Contraseña</label>
+						<input
+							id="password"
+							name="password"
+							type="text"
+							placeholder="contraseña"
+							onChange={formik.handleChange}
+							value={formik.values.password}
+						/>
+						{formik.errors.password ? <div>{formik.errors.password}</div> : null}
+						<label htmlFor="repeatPassword">Repite la contraseña</label>
+						<input
+							id="repeatPassword"
+							name="repeatPassword"
+							type="text"
+							placeholder="repite la contraseña"
+							onChange={formik.handleChange}
+							value={formik.values.repeatPassword}
+						/>
+						{formik.errors.repeatPassword ? <div>{formik.errors.repeatPassword}</div> : null}
+						<button type="submit">Enviar</button>
+					</form>
 					{exist.status == true ? (
 						<div className="alert alert-danger" role="alert">
 							{exist.msg}
