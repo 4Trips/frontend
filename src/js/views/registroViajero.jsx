@@ -3,8 +3,6 @@ import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import Avatar from "../../img/default_avatar.png";
 import Image from "react-bootstrap/Image";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import { useFormik } from "formik";
 ///Componentes
 const validate = values => {
@@ -105,7 +103,6 @@ const registerTraveler = () => {
 												const fileReader = new FileReader();
 												fileReader.onload = () => {
 													if (fileReader.readyState === 2) {
-														setFieldValue("avatar", fileReader.result);
 														setAvatarPreview(fileReader.result);
 													}
 												};
