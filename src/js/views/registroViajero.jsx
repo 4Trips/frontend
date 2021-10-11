@@ -48,33 +48,19 @@ const registerTraveler = () => {
 		status: false,
 		msg: ""
 	});
+	const [values, setValues] = React.useState({});
+
 	const handleChange = event => {
-		setValues({ ...prevValues, [event.target.name]: event.target.value });
-	};
-	const handleChangeAvatar = e => {
-		if (e.target.name == "avatar") {
-			const reader = new FileReader();
-			reader.onload = event => {
-				if (reader.readyState === 2) {
-					setDatos({ ...datos, avatar: reader.result });
-				}
-			};
-
-			if (e.target.files[0] != undefined) {
-				reader.readAsDataURL(e.target.files[0]);
-			}
-		} else {
-			setDatos({ ...datos, [e.target.name]: e.target.value });
-		}
+		setValues(prevValues => ({
+			...prevValues,
+			[event.target.name]: event.target.value
+		}));
 	};
 
-	const handleSubmitAvatar = event => {
+	const handleSubmit = event => {
 		event.preventDefault();
-		if (datos.username != "" && datos.email != "" && datos.repeatPassword == datos.password) {
-			//esto es para obtener la imagen en crudo y pasarla al back
-			const file = document.querySelector("#file");
-			actions.registerTraveler(datos, file.files[0], setExist);
-		}
+		const file = document.querySelector("#file");
+		actions.registerTraveler(datos, file.files[0], setExist);
 	};
 	const divStyle = {
 		display: "none"
@@ -84,7 +70,7 @@ const registerTraveler = () => {
 		<div className="container fluid">
 			<div className="row justify-content-center">
 				<div className="col-12 col-md-6">
-					<form className="mb-5 mt-2 p-2" onSubmit={formik.handleSubmit}>
+					<form className="mb-5 mt-2 p-2" onSubmit={handleSubmit}>
 						<div className="row justify-content-center">
 							<Image src={avatarPreview || user?.avatar}></Image>
 							<div className="row justify-content-center">
@@ -119,7 +105,7 @@ const registerTraveler = () => {
 							name="username"
 							type="text"
 							placeholder="nombre de usuario"
-							onChange={formik.handleChange}
+							onChange={handleChange}
 							value={formik.values.username}
 						/>
 						{formik.errors.username ? <div>{formik.errors.username}</div> : null}
