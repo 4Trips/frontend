@@ -40,28 +40,23 @@ const registerTraveler = () => {
 			avatar: ""
 		},
 		validate,
-		onSubmit: values => {
-			alert(JSON.stringify(values, null, 2));
+		onSubmit: () => {
+			registerTraveler();
 		}
 	});
 	const [exist, setExist] = useState({
 		status: false,
 		msg: ""
 	});
-	const [values, setValues] = React.useState({});
-
-	const handleChange = event => {
-		setValues(prevValues => ({
-			...prevValues,
-			[event.target.name]: event.target.value
-		}));
-	};
 
 	const handleSubmit = event => {
 		event.preventDefault();
 		const file = document.querySelector("#file");
-		actions.registerTraveler(datos, file.files[0], setExist);
+		const travelerData = formik.values;
+		console.log(formik.values, "VALUESSSS");
+		actions.registerTraveler(travelerData, setExist);
 	};
+	//estamos llegando a conectar al back con el handle submit pero esta dando error. en flux linea 59 tenmos a un objeto traveler que no lo pasamos desde aqui.
 	const divStyle = {
 		display: "none"
 	};
@@ -105,7 +100,7 @@ const registerTraveler = () => {
 							name="username"
 							type="text"
 							placeholder="nombre de usuario"
-							onChange={handleChange}
+							onChange={formik.handleChange}
 							value={formik.values.username}
 						/>
 						{formik.errors.username ? <div>{formik.errors.username}</div> : null}
@@ -123,7 +118,7 @@ const registerTraveler = () => {
 						<input
 							id="password"
 							name="password"
-							type="text"
+							type="password"
 							placeholder="contraseña"
 							onChange={formik.handleChange}
 							value={formik.values.password}
@@ -133,7 +128,7 @@ const registerTraveler = () => {
 						<input
 							id="repeatPassword"
 							name="repeatPassword"
-							type="text"
+							type="password"
 							placeholder="repite la contraseña"
 							onChange={formik.handleChange}
 							value={formik.values.repeatPassword}

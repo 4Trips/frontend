@@ -54,16 +54,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(err, "error login ");
 					});
 			},
-			registerTraveler: (traveler, props, file, setExist) => {
-				const store = getStore();
-				const { username, email, password, avatar } = traveler;
+			registerTraveler: travelerData => {
+				//const store = getStore();
+				console.log(travelerData, "travelerData");
+
 				let formData = new FormData();
-				formData.append("username", username);
-				formData.append("email", email);
-				formData.append("password", password);
-				if (file != undefined) {
-					formData.append("avatar", file, file.name);
-				}
+				formData.append("username", travelerData.username);
+				formData.append("email", travelerData.email);
+				formData.append("password", travelerData.password);
+				//if (file != undefined) {
+				//	formData.append("avatar", file, file.name);
+				//}
 
 				fetch(URL + "user/register/traveler", {
 					method: "POST",
