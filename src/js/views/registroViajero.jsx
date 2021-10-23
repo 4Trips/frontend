@@ -56,7 +56,6 @@ const registerTraveler = () => {
 		console.log(formik.values, "VALUESSSS");
 		actions.registerTraveler(travelerData, setExist);
 	};
-	//estamos llegando a conectar al back con el handle submit pero esta dando error. en flux linea 59 tenmos a un objeto traveler que no lo pasamos desde aqui.
 	const divStyle = {
 		display: "none"
 	};
@@ -77,6 +76,7 @@ const registerTraveler = () => {
 										<input
 											className="btn"
 											type="file"
+											accept="image/*"
 											name="avatar"
 											id="file"
 											style={divStyle}
@@ -84,6 +84,7 @@ const registerTraveler = () => {
 												const fileReader = new FileReader();
 												fileReader.onload = () => {
 													if (fileReader.readyState === 2) {
+														formik.setFieldValue("avatar", fileReader.result);
 														setAvatarPreview(fileReader.result);
 													}
 												};
