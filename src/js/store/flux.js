@@ -1,4 +1,4 @@
-const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu18.gitpod.io/";
+const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu17.gitpod.io/";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -62,9 +62,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				formData.append("username", travelerData.username);
 				formData.append("email", travelerData.email);
 				formData.append("password", travelerData.password);
-				//if (file != undefined) {
-				//	formData.append("avatar", file, file.name);
-				//}
+				if (file != undefined) {
+					formData.append("avatar", travelerData.file, travelerData.file.file.name);
+				}
 
 				fetch(URL + "user/register/traveler", {
 					method: "POST",

@@ -49,13 +49,13 @@ const registerTraveler = () => {
 		msg: ""
 	});
 
-	const handleSubmit = event => {
-		event.preventDefault();
-		const file = document.querySelector("#file");
-		const travelerData = formik.values;
-		console.log(formik.values, "VALUESSSS");
-		actions.registerTraveler(travelerData, setExist);
-	};
+	//const handleSubmit = event => {
+	//	event.preventDefault();
+	//	const file = document.querySelector("#file");
+	//	const travelerData = formik.values;
+	//	console.log(formik.values, "VALUESSSS");
+	//	actions.registerTraveler(travelerData, setExist);
+	//};
 	const divStyle = {
 		display: "none"
 	};
@@ -64,7 +64,7 @@ const registerTraveler = () => {
 		<div className="container fluid">
 			<div className="row justify-content-center">
 				<div className="col-12 col-md-6">
-					<form className="mb-5 mt-2 p-2" onSubmit={handleSubmit}>
+					<form className="mb-5 mt-2 p-2" onSubmit={formik.handleSubmit}>
 						<div className="row justify-content-center">
 							<Image src={avatarPreview || user?.avatar}></Image>
 							<div className="row justify-content-center">
@@ -135,7 +135,9 @@ const registerTraveler = () => {
 							value={formik.values.repeatPassword}
 						/>
 						{formik.errors.repeatPassword ? <div>{formik.errors.repeatPassword}</div> : null}
-						<button type="submit">Enviar</button>
+						<button type="submit" disabled={!(formik.isValid && formik.dirty)}>
+							Enviar
+						</button>
 					</form>
 					{exist.status == true ? (
 						<div className="alert alert-danger" role="alert">
