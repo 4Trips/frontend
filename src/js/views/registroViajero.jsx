@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import Avatar from "../../img/default_avatar.png";
@@ -7,11 +7,16 @@ import Image from "react-bootstrap/Image";
 ///Componentes
 const registerTraveler = props => {
 	// uso useRef para probar que es el primer render
-	const firstRender = useRef(true)
+	const firstRender = useRef(true);
 	// variable de estado para activar/desactivar button submit. Parte de desactivado en el primer render
-  	const [disable, setDisabled] = useState(true)
+	const [disable, setDisabled] = useState(true);
 	// variable de estado para mostrar errores al usuario
-	const [nameError, setNameError] = useState(null)
+	const [nameError, setNameError] = useState(null);
+	//variable para mostrar errores del back
+	const [exist, setExist] = useState({
+		status: false,
+		msg: ""
+	});
 	//accedo al store
 	const { store, actions } = useContext(Context);
 	// seteo valores iniciales
@@ -22,45 +27,43 @@ const registerTraveler = props => {
 		repeatPassword: "",
 		avatar: ""
 	});
-  	// corremos las validaciones cuando cambia la variable datos
-  	useEffect(() => {
-    // para saltar la validación en el primer render
-    if (firstRender.current) {
-      firstRender.current = false
-      return
-    }
-    // aquí activamos/desactivamos el button llamando a la funcion de validacion que devuelve true/false
-    setDisabled(formValidation())
-  	}, [datos])
+	// corremos las validaciones cuando cambia la variable datos
+	useEffect(() => {
+		// para saltar la validación en el primer render
+		if (firstRender.current) {
+			firstRender.current = false;
+			return;
+		}
+		// aquí activamos/desactivamos el button llamando a la funcion de validacion que devuelve true/false
+		setDisabled(formValidation());
+	}, [datos]);
 	const formValidation = () => {
-		if (!values.username) {
-			errors.username = "Obligatorio";
-		} else if (values.username.length > 15) {
-			errors.firstName = "Debe tener 15 caracteres o menos";
+		if (!username) {
+			setNameError("Obligatorio");
+		} else if (username.length > 15) {
+			setNameError("Debe tener 15 caracteres o menos");
 		}
-		if (!values.email) {
-			errors.email = "Obligatorio";
-		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-			errors.email = "Dirección de correo electrónico errónea";
+		if (!email) {
+			setNameError("Obligatorio");
+		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+			setNameError("Dirección de correo electrónico errónea");
 		}
-		if (!values.password) {
-			errors.password = "Obligatorio";
-		} else if (values.password.length < 6) {
-			errors.password = "La contraseña debe tener al menos 6 caracteres";
+		if (!password) {
+			setNameError("Obligatorio");
+		} else if (password.length < 6) {
+			setNameError("La contraseña debe tener al menos 6 caracteres");
 		}
-		if (!values.repeatPassword) {
-			errors.repeatPassword = "Obligatorio";
-		} else if (values.password != values.repeatPassword) {
-			errors.repeatPassword = "Las contraseñas deben coincidir";
+		if (!repeatPassword) {
+			setNameError("Obligatorio");
+		} else if (password != repeatPassword) {
+			setNameError("Las contraseñas deben coincidir");
 		}
-		return errors;
+		return false;
 	};
 	const handleSubmit = event => {
-		vent.preventDefault();
+		event.preventDefault();
 		const file = document.querySelector("#file");
-		const travelerData = formik.values;
-		console.log(values, "VALUESSSS");
-		actions.registerTraveler(travelerData, setExist);
+		actions.registerTraveler(datos, setExist);
 	};
 	const divStyle = {
 		display: "none"
@@ -107,41 +110,41 @@ const registerTraveler = props => {
 							name="username"
 							type="text"
 							placeholder="nombre de usuario"
-							onChange={ e => setDatos(e.target.value) }
+							onChange={e => setDatos(e.target.value)}
 							value={datos.username}
 						/>
-						{errors.username ? <div>{errors.username}</div> : null}
+
 						<label htmlFor="email">Email</label>
 						<input
 							id="email"
 							name="email"
 							type="text"
 							placeholder="email"
-							onChange={ e => setDatos(e.target.value) }
+							onChange={e => setDatos(e.target.value)}
 							value={datos.email}
 						/>
-						{errors.email ? <div>{errors.email}</div> : null}
+
 						<label htmlFor="password">Contraseña</label>
 						<input
 							id="password"
 							name="password"
 							type="password"
 							placeholder="contraseña"
-							onChange={ e => setDatos(e.target.value) }
+							onChange={e => setDatos(e.target.value)}
 							value={datos.password}
 						/>
-						{errors.password ? <div>{errors.password}</div> : null}
+
 						<label htmlFor="repeatPassword">Repite la contraseña</label>
 						<input
 							id="repeatPassword"
 							name="repeatPassword"
 							type="password"
 							placeholder="repite la contraseña"
-							onChange={ e => setDatos(e.target.value) }
+							onChange={e => setDatos(e.target.value)}
 							value={datos.repeatPassword}
 						/>
-						{errors.repeatPassword ? <div>{errors.repeatPassword}</div> : null}
-						{ nameError && <p>{nameError}</p> }
+
+						{nameError && <p>{nameError}</p>}
 						<button type="submit" disabled={disable}>
 							Enviar
 						</button>
