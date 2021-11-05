@@ -11,7 +11,7 @@ const registerTraveler = props => {
 	// variable de estado para activar/desactivar button submit. Parte de desactivado en el primer render
 	const [disable, setDisabled] = useState(true);
 	// variable de estado para mostrar errores al usuario
-	const [nameError, setNameError] = useState(null);
+	const [errors, setErrors] = useState({});
 	//variable para mostrar errores del back
 	const [exist, setExist] = useState({
 		status: false,
@@ -36,29 +36,30 @@ const registerTraveler = props => {
 		}
 		// aquí activamos/desactivamos el button llamando a la funcion de validacion que devuelve true/false
 		setDisabled(formValidation());
-	}, [datos]);
+	}, [username, email, password, repeatPassword]);
 	const formValidation = () => {
+		let newErrors = {};
 		if (!username) {
-			setNameError("Obligatorio");
+			newErrors.username = "Obligatorio";
 		} else if (username.length > 15) {
-			setNameError("Debe tener 15 caracteres o menos");
+			newErrors.username("Debe tener 15 caracteres o menos");
 		}
 		if (!email) {
-			setNameError("Obligatorio");
+			newErrors.email("Obligatorio");
 		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-			setNameError("Dirección de correo electrónico errónea");
+			newErrors.email = "Dirección de correo electrónico errónea";
 		}
 		if (!password) {
-			setNameError("Obligatorio");
+			newErrors.password = "Obligatorio";
 		} else if (password.length < 6) {
-			setNameError("La contraseña debe tener al menos 6 caracteres");
+			newErrors.password = "La contraseña debe tener al menos 6 caracteres";
 		}
 		if (!repeatPassword) {
-			setNameError("Obligatorio");
+			newErrors.repeatPassword = "Obligatorio";
 		} else if (password != repeatPassword) {
-			setNameError("Las contraseñas deben coincidir");
+			newErrors.repeatPassword = "Las contraseñas deben coincidir";
 		}
-		return false;
+		setErrors(newErrors);
 	};
 	const handleSubmit = event => {
 		event.preventDefault();
@@ -144,7 +145,7 @@ const registerTraveler = props => {
 							value={datos.repeatPassword}
 						/>
 
-						{nameError && <p>{nameError}</p>}
+						{errors && <p>{errors}</p>}
 						<button type="submit" disabled={disable}>
 							Enviar
 						</button>
