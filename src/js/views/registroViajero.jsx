@@ -11,7 +11,7 @@ const registerTraveler = props => {
 	// variable de estado para activar/desactivar button submit. Parte de desactivado en el primer render
 	const [disable, setDisabled] = useState(true);
 	// variable de estado para mostrar errores al usuario
-	const [errors, setErrors] = useState({});
+	const [errors, setErrors] = useState([]);
 	//variable para mostrar errores del back
 	const [exist, setExist] = useState({
 		status: false,
@@ -36,7 +36,7 @@ const registerTraveler = props => {
 		}
 		// aquí activamos/desactivamos el button llamando a la funcion de validacion que devuelve true/false
 		setDisabled(formValidation());
-	}, [username, email, password, repeatPassword]);
+	}, [datos.username, datos.email, datos.password, datos.repeatPassword]);
 	const formValidation = () => {
 		let newErrors = {};
 		if (!username) {

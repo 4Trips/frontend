@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 
 const registerTravelerNo = props => {
 	const { store, actions } = useContext(Context);
+	const firstRender = useRef(true);
+
 	const [datos, setDatos] = useState({
 		username: "",
 		email: "",
@@ -11,8 +13,7 @@ const registerTravelerNo = props => {
 		repeatPassword: "",
 		avatar: ""
 	});
-	const [valid, setValid] = useState(false);
-
+	const [disable, setDisable] = useState(false);
 	const handleChange = e => {
 		if (e.target.name == "avatar") {
 			// verficamos el nombre del input con el nombre "avatar"
@@ -26,7 +27,6 @@ const registerTravelerNo = props => {
 					setDatos({ ...datos, avatar: reader.result }); // seteamos en el estado el resultado que hemos tenido
 				}
 			};
-
 			if (e.target.files[0] != undefined) {
 				//verfeicamos que existe un elemento de tipo file
 				console.log("targen unbdefin", e.target.files[0]);
@@ -36,19 +36,54 @@ const registerTravelerNo = props => {
 			setDatos({ ...datos, [e.target.name]: e.target.value });
 		}
 	};
-	const handleSubmit = e => {
-		if (!username) {
-			setNameError("Obligatorio");
-		} else if (username.length > 15) {
-			setNameError("Debe tener 15 caracteres o menos");
-		} else setValid(true);
-		if (!email) {
-			setNameError("Obligatorio");
-		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-			setNameError("Dirección de correo electrónico errónea");
-		} else setValid(true);
+	const formValidation = event => {
+		const errors = {};
+		if (!datos.username) {
+			errors.username = "Obligatorio";
+			console.log("dentro de form");
+			setDisable(false);
+		} else if (datos.username.length > 15) {
+			errors.firstName = "Debe tener 15 caracteres o menos";
+			setDisable(false);
+		} else setDisable(true);
+		if (!datos.email) {
+			errors.email = "Obligatorio";
+			setDisable(false);
+		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(datos.email)) {
+			errors.email = "Dirección de correo electrónico errónea";
+			setDisable(false);
+		} else setDisable(true);
+		if (!datos.password) {
+			errors.password = "Obligatorio";
+			setDisable(false);
+		} else if (datos.password.length < 6) {
+			errors.password = "La contraseña debe tener al menos 6 caracteres";
+			setDisable(false);
+		} else setDisable(true);
+		if (!datos.repeatPassword) {
+			errors.repeatPassword = "Obligatorio";
+			setDisable(false);
+		} else if (datos.password != datos.repeatPassword) {
+			errors.repeatPassword = "Las contraseñas deben coincidir";
+			setDisable(false);
+		} else setDisable(true);
 	};
-	console.log(valid);
+
+	useEffect(() => {
+		if (firstRender.current) {
+			firstRender.current = false;
+			return;
+		}
+		formValidation();
+	}, [datos]);
+	console.log(datos);
+	console.log(disable);
+
+	const handleSubmit = event => {
+		event.preventDefault();
+		const file = document.querySelector("#file");
+		actions.registerTraveler(datos, file.files[0]);
+	};
 	const divStyle = {
 		display: "none"
 	};
@@ -56,7 +91,7 @@ const registerTravelerNo = props => {
 		<div className="container fluid">
 			<div className="row justify-content-center">
 				<div className="col-12 col-md-6">
-					<form className="mb-5 mt-2 p-2">
+					<form className="mb-5 mt-2 p-2" onSubmit={handleSubmit} onChange={handleChange}>
 						<div className="row justify-content-center">
 							<div className="row justify-content-center">
 								<div className="col text-center">
@@ -93,7 +128,9 @@ const registerTravelerNo = props => {
 							placeholder="repite la contraseña"
 						/>
 
-						<button type="submit">Enviar</button>
+						<button type="submit" disabled={disable}>
+							Enviar
+						</button>
 					</form>
 				</div>
 			</div>
