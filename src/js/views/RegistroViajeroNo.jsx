@@ -41,32 +41,32 @@ const registerTravelerNo = props => {
 		if (!datos.username) {
 			errors.username = "Obligatorio";
 			console.log("dentro de form");
-			setDisable(false);
+			setDisable(true);
 		} else if (datos.username.length > 15) {
 			errors.firstName = "Debe tener 15 caracteres o menos";
-			setDisable(false);
-		} else setDisable(true);
+			setDisable(true);
+		} else setDisable(false);
 		if (!datos.email) {
 			errors.email = "Obligatorio";
-			setDisable(false);
+			setDisable(true);
 		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(datos.email)) {
 			errors.email = "Dirección de correo electrónico errónea";
-			setDisable(false);
-		} else setDisable(true);
+			setDisable(true);
+		} else setDisable(false);
 		if (!datos.password) {
 			errors.password = "Obligatorio";
-			setDisable(false);
+			setDisable(true);
 		} else if (datos.password.length < 6) {
 			errors.password = "La contraseña debe tener al menos 6 caracteres";
-			setDisable(false);
-		} else setDisable(true);
+			setDisable(true);
+		} else setDisable(false);
 		if (!datos.repeatPassword) {
 			errors.repeatPassword = "Obligatorio";
-			setDisable(false);
+			setDisable(true);
 		} else if (datos.password != datos.repeatPassword) {
 			errors.repeatPassword = "Las contraseñas deben coincidir";
-			setDisable(false);
-		} else setDisable(true);
+			setDisable(true);
+		} else setDisable(false);
 	};
 
 	useEffect(() => {
