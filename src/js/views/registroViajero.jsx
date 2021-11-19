@@ -1,17 +1,16 @@
 import React from "react";
-import useForm from "../hooks/useForm.jsx";
+import useFormRegTraveler from "../hooks/useFormRegTraveler.jsx";
 import validate from "../registerTravelervalidations.jsx";
-import { Context } from "../store/appContext";
+
 import PropTypes from "prop-types";
 import Avatar from "../../img/default_avatar.png";
 import Image from "react-bootstrap/Image";
 
-const Form = () => {
-	const { values, errors, handleChange, handleSubmit } = useForm(registerTraveler, validate);
-	function registerTraveler() {
-		console.log("No errores, llamada al envío realizada!");
+const FormRegisterTraveler = () => {
+	const { values, errors, handleChange, handleSubmit } = useFormRegTraveler(signUp, validate); //Pasamos al hook useFormRegTraveler la función de validación por parámetros
+	function signUp() {
+		console.log("No errores, callback realizada");
 	}
-	//accedo al store
 	const divStyle = {
 		display: "none"
 	};
@@ -74,7 +73,7 @@ const Form = () => {
 		</div>
 	);
 };
-Form.propTypes = {
+FormRegisterTraveler.propTypes = {
 	history: PropTypes.object
 };
-export default Form;
+export default FormRegisterTraveler;

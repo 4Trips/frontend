@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { Context } from "../store/appContext";
 
-const useForm = (callback, validate) => {
+const useFormRegTraveler = (callback, validate) => {
 	const [values, setValues] = useState({});
 	const [errors, setErrors] = useState({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const { store, actions } = useContext(Context);
 
 	useEffect(() => {
 		if (Object.keys(errors).length === 0 && isSubmitting) {
-			callback();
+			callback(actions.registerTraveler(values));
 		}
 	}, [errors]);
 
@@ -30,4 +32,4 @@ const useForm = (callback, validate) => {
 	};
 };
 
-export default useForm;
+export default useFormRegTraveler;
