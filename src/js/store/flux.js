@@ -59,11 +59,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log(values, "values");
 
 				let formData = new FormData();
-				formData.append("username", values.username);
-				formData.append("email", values.email);
-				formData.append("password", values.password);
+				formData.append("username", username);
+				formData.append("email", email);
+				formData.append("password", password);
 				if (file != undefined) {
-					formData.append("avatar", values.file, values.file.file.name);
+					formData.append("avatar", file, file.file.name);
 				}
 
 				fetch(URL + "user/register/traveler", {

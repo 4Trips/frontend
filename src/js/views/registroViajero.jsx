@@ -1,24 +1,43 @@
 import React from "react";
 import useFormRegTraveler from "../hooks/useFormRegTraveler.jsx";
 import validate from "../registerTravelervalidations.jsx";
-
 import PropTypes from "prop-types";
-import Avatar from "../../img/default_avatar.png";
-import Image from "react-bootstrap/Image";
 
 const FormRegisterTraveler = () => {
-	const { values, errors, handleChange, handleSubmit } = useFormRegTraveler(signUp, validate); //Pasamos al hook useFormRegTraveler la función de validación por parámetros
+	const { values, errors, handleChange, handleSubmit, handleFileUpload } = useFormRegTraveler(signUp, validate); //Pasamos al hook useFormRegTraveler la función de validación por parámetros
 	function signUp() {
 		console.log("No errores, callback realizada");
 	}
-	const divStyle = {
-		display: "none"
-	};
 	return (
 		<div className="container fluid">
 			<div className="row justify-content-center">
 				<div className="col-12 col-md-6">
 					<form className="mb-5 mt-2 p-2" onSubmit={handleSubmit} noValidate>
+						<div className="row justify-content-center">
+							<div className="mb-5 mt-2 p-2">
+								{values.avatar ? (
+									<img className="mb-5 mt-2 p-2" src={values.avatar} />
+								) : (
+									<img
+										src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
+										className="mb-5 mt-2 p-2"
+									/>
+								)}
+							</div>
+							<div className="mb-3 mt-3">
+								<label htmlFor="file" className="btn btn-outline-dark btn-sm">
+									Sube una foto
+								</label>
+								<input
+									name="avatar"
+									type="file"
+									accept="image/*"
+									hidden
+									id="file"
+									onChange={handleFileUpload}
+								/>
+							</div>
+						</div>
 						<label htmlFor="username">Nombre de usuario</label>
 						<input
 							id="username"

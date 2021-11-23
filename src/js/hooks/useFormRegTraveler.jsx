@@ -18,6 +18,18 @@ const useFormRegTraveler = (callback, validate) => {
 		setErrors(validate(values));
 		setIsSubmitting(true);
 	};
+	const handleFileUpload = event => {
+		const reader = new FileReader();
+		const file = event.target.files[0];
+		reader.onloadend = () => {
+			//function setea value avatar como string base64.
+			setValues({
+				avatar: reader.result
+			});
+			console.log("reader.result", reader.result);
+		};
+		reader.readAsDataURL(file); //lee el contenido del archivo de imagen y activa loadend después de que lo ha leído
+	};
 
 	const handleChange = event => {
 		event.persist(); //así hacemos el primer event nulo cuando el segundo evento es ejecutado
@@ -25,6 +37,7 @@ const useFormRegTraveler = (callback, validate) => {
 	};
 
 	return {
+		handleFileUpload,
 		handleChange,
 		handleSubmit,
 		values,
