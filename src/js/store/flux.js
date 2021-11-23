@@ -54,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(err, "error login ");
 					});
 			},
-			registerTraveler: values => {
+			registerTraveler: (values, props, file) => {
 				const store = getStore();
 				console.log(values, "values");
 
