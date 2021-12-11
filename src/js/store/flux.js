@@ -1,8 +1,10 @@
-const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu17.gitpod.io/";
+const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu23.gitpod.io/";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			isLogin: false
+			isLogin: false,
+			errorsBackEnd: [],
+			travelerInfoCollected: []
 		},
 		actions: {
 			login: (body, setErrFetch, history, setLoading) => {
@@ -54,47 +56,51 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(err, "error login ");
 					});
 			},
-			registerTraveler: (values, props, file) => {
+			registerTraveler: (traveler, props, values, file) => {
 				const store = getStore();
-				console.log(values, "values");
-
+				const { username, email, password, avatar } = traveler;
 				let formData = new FormData();
 				formData.append("username", username);
 				formData.append("email", email);
 				formData.append("password", password);
-				if (file != undefined) {
-					formData.append("avatar", file, file.file.name);
-				}
-
+				formData.append("avatar", avatar);
 				fetch(URL + "user/register/traveler", {
 					method: "POST",
 					body: formData,
-					redirect: "follow",
-					headers: {
-						//"Content-Type": "application/json"
-					}
+					redirect: "follow"
+					//	headers: { "Content-Type": "multipart/form-data" }
 				})
-					.then(res => {
-						if (res.status == 200) {
-							setTimeout(() => {
-								props.history.push("/login");
-							}, 1000);
-						} else if (res.status == 404) {
-							setNoValied({
-								status: true,
-								msg: "introduce todos los campos"
-							});
-						}
-						if (res.status == 409) {
-							setExist({ status: true, msg: "Correo o nombre de usuario ya existe " });
-						}
-					})
 					.then(data => {
 						setStore({ travelerInfoCollected: data });
 					})
 					.catch(err => {
 						console.log(err);
 					});
+			},
+			registerTravelerAwait: async (traveler, values, file) => {
+				const { username, email, password, avatar } = traveler;
+				let formData = new FormData();
+				formData.append("username", username);
+				formData.append("email", email);
+				formData.append("password", password);
+				console.log(file.name);
+				console.log(file, "file fetch");
+				console.log(traveler, "traveler antes file");
+
+				if (avatar != undefined) {
+					formData.append("avatar", traveler.avatar, traveler.avatar.name);
+				}
+				console.log(traveler);
+				const response = await fetch(URL + "user/register/traveler", {
+					method: "POST",
+					body: formData,
+					redirect: "follow"
+					//headers: { "Content-Type": "multipart/form-data" }
+				});
+				const data = setStore({ travelerInfoCollected: response.json() });
+				if (response.status === 409) {
+					setStore({ errorsBackEnd: response.json() });
+				}
 			}
 		}
 	};

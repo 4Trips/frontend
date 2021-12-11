@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import useFormRegTraveler from "../hooks/useFormRegTraveler.jsx";
 import validate from "../registerTravelervalidations.jsx";
 import PropTypes from "prop-types";
+import { Context } from "../store/appContext";
 
 const FormRegisterTraveler = () => {
 	const { values, errors, handleChange, handleSubmit, handleFileUpload } = useFormRegTraveler(signUp, validate); //Pasamos al hook useFormRegTraveler la función de validación por parámetros
 	function signUp() {
 		console.log("No errores, callback realizada");
 	}
+	const { store } = useContext(Context);
 	return (
 		<div className="container fluid">
 			<div className="row justify-content-center">
@@ -16,7 +18,7 @@ const FormRegisterTraveler = () => {
 						<div className="row justify-content-center">
 							<div className="mb-5 mt-2 p-2">
 								{values.avatar ? (
-									<img className="mb-5 mt-2 p-2" src={values.avatar} />
+									<img className="mb-5 mt-2 p-2" src={values.avatar || ""} />
 								) : (
 									<img
 										src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
@@ -79,6 +81,7 @@ const FormRegisterTraveler = () => {
 						/>
 						{errors.repeatPassword && <p>{errors.repeatPassword}</p>}
 						<button type="submit">Enviar</button>
+						{store.errorsBackEnd && <p>{store.errorsBackEnd} </p>}
 					</form>
 				</div>
 			</div>
