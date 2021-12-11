@@ -26,7 +26,8 @@ const useFormRegTraveler = (callback, validate) => {
 		reader.onloadend = () => {
 			//function setea value avatar como string base64.
 			setValues({
-				avatar: file
+				avatar: file,
+				previewAvatar: reader.result
 			});
 			console.log("file", file);
 		};

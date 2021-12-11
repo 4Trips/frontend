@@ -17,8 +17,8 @@ const FormRegisterTraveler = () => {
 					<form className="mb-5 mt-2 p-2" onSubmit={handleSubmit} noValidate>
 						<div className="row justify-content-center">
 							<div className="mb-5 mt-2 p-2">
-								{values.avatar ? (
-									<img className="mb-5 mt-2 p-2" src={values.avatar || ""} />
+								{values.previewAvatar ? (
+									<img className="mb-5 mt-2 p-2" src={values.previewAvatar || ""} />
 								) : (
 									<img
 										src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
