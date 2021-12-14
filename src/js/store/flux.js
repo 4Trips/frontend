@@ -3,8 +3,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			isLogin: false,
-			errorsBackEnd: [],
-			travelerInfoCollected: []
+			travelerInfoCollected: [],
+			errorBack: []
 		},
 		actions: {
 			login: (body, setErrFetch, history, setLoading) => {
@@ -77,29 +77,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(err);
 					});
 			},
-			registerTravelerAwait: async (traveler, values, file) => {
+			registerTravelerAwait: async (traveler, values, file, setBackEndErrors) => {
 				const { username, email, password, avatar } = traveler;
 				let formData = new FormData();
 				formData.append("username", username);
 				formData.append("email", email);
 				formData.append("password", password);
-				console.log(file.name);
-				console.log(file, "file fetch");
-				console.log(traveler, "traveler antes file");
-
 				if (avatar != undefined) {
-					formData.append("avatar", traveler.avatar, traveler.avatar.name);
+					formData.append("avatar", avatar);
 				}
 				console.log(traveler);
 				const response = await fetch(URL + "user/register/traveler", {
 					method: "POST",
 					body: formData,
 					redirect: "follow"
-					//headers: { "Content-Type": "multipart/form-data" }
 				});
 				const data = setStore({ travelerInfoCollected: response.json() });
 				if (response.status === 409) {
-					setStore({ errorsBackEnd: response.json() });
+					setStore({ errorBack: "Correo o nombre exite" });
 				}
 			}
 		}

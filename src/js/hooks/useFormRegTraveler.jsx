@@ -4,14 +4,13 @@ import { Context } from "../store/appContext";
 
 const useFormRegTraveler = (callback, validate) => {
 	const [errors, setErrors] = useState({});
-	//const [backEndErrors, setBackEndErrors] = useState({});
 	const [values, setValues] = useState({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const { store, actions } = useContext(Context);
 
 	useEffect(() => {
 		if (Object.keys(errors).length === 0 && isSubmitting) {
-			callback(actions.registerTraveler(values, errors, file));
+			callback(actions.registerTravelerAwait(values, errors, file));
 		}
 	}, [errors]);
 
@@ -23,6 +22,7 @@ const useFormRegTraveler = (callback, validate) => {
 	const handleFileUpload = event => {
 		const reader = new FileReader();
 		const file = event.target.files[0];
+
 		reader.onloadend = () => {
 			//function setea value avatar como string base64.
 			setValues({
