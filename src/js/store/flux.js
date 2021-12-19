@@ -4,7 +4,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			isLogin: false,
 			travelerInfoCollected: [],
-			errorBack: []
+			errorBack: [],
+			loading: false
 		},
 		actions: {
 			login: (body, setErrFetch, history, setLoading) => {
@@ -56,28 +57,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(err, "error login ");
 					});
 			},
-			registerTraveler: (traveler, props, values, file) => {
-				const store = getStore();
-				const { username, email, password, avatar } = traveler;
-				let formData = new FormData();
-				formData.append("username", username);
-				formData.append("email", email);
-				formData.append("password", password);
-				formData.append("avatar", avatar);
-				fetch(URL + "user/register/traveler", {
-					method: "POST",
-					body: formData,
-					redirect: "follow"
-					//	headers: { "Content-Type": "multipart/form-data" }
-				})
-					.then(data => {
-						setStore({ travelerInfoCollected: data });
-					})
-					.catch(err => {
-						console.log(err);
-					});
-			},
-			registerTravelerAwait: async (traveler, values, file, setBackEndErrors) => {
+			registerTravelerAwait: async (traveler, values, file, setLoading) => {
+				setStore({ loading: true });
 				const { username, email, password, avatar } = traveler;
 				let formData = new FormData();
 				formData.append("username", username);
@@ -92,10 +73,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					body: formData,
 					redirect: "follow"
 				});
-				const data = setStore({ travelerInfoCollected: response.json() });
+				//const data = setStore({ travelerInfoCollected: response.json() });
 				if (response.status === 409) {
 					setStore({ errorBack: "Correo o nombre exite" });
 				}
+				if (response.status === 200) {
+					setStore({ errorBack: "" });
+				}
+				setStore({ loading: false });
 			}
 		}
 	};

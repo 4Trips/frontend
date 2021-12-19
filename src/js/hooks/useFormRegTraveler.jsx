@@ -22,22 +22,25 @@ const useFormRegTraveler = (callback, validate) => {
 	const handleFileUpload = event => {
 		const reader = new FileReader();
 		const file = event.target.files[0];
-
-		reader.onloadend = () => {
-			//function setea value avatar como string base64.
-			setValues({
-				avatar: file,
-				previewAvatar: reader.result
-			});
-			console.log("file", file);
-		};
-		reader.readAsDataURL(file); //lee el contenido del archivo de imagen y activa loadend después de que lo ha leído
+		const filesize = event.target.files[0].size;
+		if (file.size > 5242880) {
+			alert("La foto debe ser menos que 5MB");
+		} else {
+			reader.onloadend = () => {
+				//function setea value avatar como string base64.
+				setValues({
+					avatar: file,
+					previewAvatar: reader.result
+				});
+				console.log(filesize);
+			};
+			reader.readAsDataURL(file); //lee el contenido del archivo de imagen y activa loadend después de que lo ha leído
+		}
 	};
 	const handleChange = event => {
 		event.persist(); //así hacemos el primer event nulo cuando el segundo evento es ejecutado
 		setValues(values => ({ ...values, [event.target.name]: event.target.value }));
 	};
-
 	return {
 		handleFileUpload,
 		handleChange,

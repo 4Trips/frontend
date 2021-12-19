@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import useFormRegTraveler from "../hooks/useFormRegTraveler.jsx";
 import validate from "../registerTravelervalidations.jsx";
 import PropTypes from "prop-types";
@@ -15,7 +15,7 @@ const FormRegisterTraveler = () => {
 		<div className="container">
 			<div className="row">
 				<div className="col-md-6 offset-md-3">
-					<div clasName="card my-5">
+					<div className="card my-5">
 						<form className="card-body cardbody-color p-lg-5" onSubmit={handleSubmit} noValidate>
 							<div className="text-center">
 								<div className="text-center">
@@ -98,10 +98,16 @@ const FormRegisterTraveler = () => {
 								/>
 								{errors.repeatPassword && <p>{errors.repeatPassword}</p>}
 							</div>
-							<button type="submit" className="btn btn-outline-dark px-5 mb-5 w-100">
-								Enviar
-							</button>
-							{store.errorBack && <p>{store.errorBack} </p>}
+							{store.loading === false ? (
+								<button type="submit" className="btn btn-outline-dark px-5 mb-5 w-100">
+									Enviar
+								</button>
+							) : (
+								<div className="text-center">
+									<div className="spinner-border text-dark" role="status"></div>
+								</div>
+							)}
+							{store.errorBack && <p>{store.errorBack}</p>}
 						</form>
 					</div>
 				</div>
