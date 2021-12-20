@@ -9,6 +9,7 @@ import injectContext from "./store/appContext";
 
 import { Footer } from "./component/footer.jsx";
 import Menu from "./component/navbar.jsx";
+import registerTraveler from "./views/registroViajero.jsx";
 
 //create your first component
 const Layout = () => {
@@ -25,6 +26,7 @@ const Layout = () => {
 						<Route exact path="/">
 							<Home />
 						</Route>
+						<Route exact path="/registroviajero" component={registerTraveler} />
 
 						<Route exact path="/single/:theid">
 							<Single />

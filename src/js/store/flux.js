@@ -1,8 +1,11 @@
-const URL = "https://3000-sapphire-ant-23c0doyk.ws-eu16.gitpod.io/";
+const URL = "https://3000-plum-squirrel-2vm5c1w1.ws-eu23.gitpod.io/";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			isLogin: false
+			isLogin: false,
+			travelerInfoCollected: [],
+			errorBack: [],
+			loading: false
 		},
 		actions: {
 			login: (body, setErrFetch, history, setLoading) => {
@@ -53,6 +56,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(err => {
 						console.log(err, "error login ");
 					});
+			},
+			registerTravelerAwait: async (traveler, values, file, setLoading) => {
+				setStore({ loading: true });
+				const { username, email, password, avatar } = traveler;
+				let formData = new FormData();
+				formData.append("username", username);
+				formData.append("email", email);
+				formData.append("password", password);
+				if (avatar != undefined) {
+					formData.append("avatar", avatar);
+				}
+				console.log(traveler);
+				const response = await fetch(URL + "user/register/traveler", {
+					method: "POST",
+					body: formData,
+					redirect: "follow"
+				});
+				//const data = setStore({ travelerInfoCollected: response.json() });
+				if (response.status === 409) {
+					setStore({ errorBack: "Correo o nombre exite" });
+				}
+				if (response.status === 200) {
+					setStore({ errorBack: "" });
+				}
+				setStore({ loading: false });
 			}
 		}
 	};
