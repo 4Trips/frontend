@@ -40,7 +40,7 @@ const Menu = props => {
 							<NavDropdown.Item href="#action/3.1">Viajero</NavDropdown.Item>
 							<NavDropdown.Item href="#action/3.2">Profesional</NavDropdown.Item>
 						</NavDropdown>
-						<Nav.Link eventKey={2} href="#memes">
+						<Nav.Link eventKey={2} href="/login">
 							Iniciar sesión
 						</Nav.Link>
 					</Nav>
