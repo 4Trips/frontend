@@ -20,5 +20,19 @@ export default function validate(values) {
 	} else if (values.password != values.repeatPassword) {
 		errors.repeatPassword = "Las contraseñas deben coincidir";
 	}
+	if (!values.destination) {
+		errors.destination = "Tienes que escoger un destino";
+	}
+	if (!values.first_day) {
+		errors.first_day = "Tienes que asignar una fecha de inicio";
+	}
+	if (!values.last_day) {
+		errors.last_day = "Tienes que asignar una fecha final";
+	}
+	if (!values.description) {
+		errors.last_day = "Tienes que escribir una descripcion";
+	} else if (values.description.length < 30) {
+		errors.description = "Al menos 30 caracteres";
+	}
 	return errors;
 }
