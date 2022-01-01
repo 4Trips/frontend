@@ -81,6 +81,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ errorBack: "" });
 				}
 				setStore({ loading: false });
+			},
+			addTrip: async trip => {
+				const token = localStorage.getItem("token");
+				let newNeedsTrip = ""; //convierto el array needs_trip en string para que lo pueda recoger el backend
+				for (let i = 0; i < trip.needs_trip.length; i++) {
+					newNeedsTrip += trip.needs_trip[i] + ",";
+				}
+				trip.needs_trip = newNeedsTrip.slice(0, -1); //quito la última coma
+				const response = await fetch(URL + "viaje", {
+					method: "POST",
+					body: JSON.stringify(trip),
+					headers: {
+						Authorization: "Bearer " + token, //tengo que hacer espacio despues de Bearer para que pueda funcionar el split
+						"Content-Type": "application/json"
+					}
+				});
+				if (response.status == 200) {
+					setStore({ page: 1, tripList: [] });
+					getActions().loadingTrips(1);
+					return true;
+				} else return false;
 			}
 		}
 	};
